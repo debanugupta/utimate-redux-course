@@ -1,19 +1,20 @@
-import store from './store';
-import { bugAdded, bugRemoved, bugResolved } from './actions';
+import configureStore from './store/configureStore';
+import * as actions from './store/bugs';
+import { projectAdded } from './store/projects';
 
-console.log(store);
+const store = configureStore();
 
 // notify subscribers
-const unsubscribe = store.subscribe(() => {
-    console.log('Store changed!', store.getState());
-  });
+store.subscribe(() => {
+  console.log('Store changed!', store.getState());
+});
 
-// store.dispatch (bugAdded("Bug 1"));
-// store.dispatch (bugAdded("Bug 2"));
-// store.dispatch (bugAdded("Bug 3"));
-// store.dispatch (bugResolved(1));
-// store.dispatch (bugRemoved(1));
+store.dispatch(projectAdded({ name: "Project 1"}));
+store.dispatch (actions.bugAdded({ description: "Bug 1"}));
+store.dispatch (actions.bugAdded({ description: "Bug 2"}));
+store.dispatch (actions.bugAdded({ description: "Bug 3"}));
+store.dispatch (actions.bugResolved({ id: 1 }));
+// store.dispatch (actions.bugRemoved(1));
 
-unsubscribe();
 
 console.log(store.getState());
